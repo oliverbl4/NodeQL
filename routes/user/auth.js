@@ -15,16 +15,18 @@ router.post('/', function (req, res, next) {
             return next(new error_types.Error400("Login failed."));
         }
 
+        const { env: { JWT_LIFETIME = 0, JWT_ALGORITHM = null, JWT_SECRET = null } = {} } = process || {};
+
         // If has been authenticated successfully, then create a jwt token
         const payload = {
             sub: user._id,
-            exp: Math.round(Date.now()/1000) + parseInt(process.env.JWT_LIFETIME),
+            exp: Math.round(Date.now()/1000) + parseInt(JWT_LIFETIME),
             username: user.emailAddress
         };
-        const token = jwt.sign(JSON.stringify(payload), process.env.JWT_SECRET, {algorithm: process.env.JWT_ALGORITHM});
+        const token = jwt.sign(JSON.stringify(payload), JWT_SECRET, {algorithm: JWT_ALGORITHM});
 
-        return res.json({user, token});
-
+        // Token response
+        return res.json({token});
     })
     (req, res);
 

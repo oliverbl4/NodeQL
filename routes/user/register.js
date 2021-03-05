@@ -10,20 +10,22 @@ router.post('/', function (req, res, next) {
         .then(data => { //si la consulta se ejecuta
             if (data) { //si el usuario existe
                 throw new error_types.InfoError("User already exists");
-            } else { //si no existe el usuario se crea/registra
-                console.log("creando usuario");
-                var hash = bcrypt.hashSync(req.body.password, parseInt(process.env.BCRYPT_ROUNDS));
-                let document = new UserModel({
-                    name: req.body.name,
-                    emailAddress: req.body.emailAddress || '',
-                    userName: req.body.userName || '',
-                    password: hash,
-                });
-                return document.save();
+                return;
             }
+            console.log("creando usuario");
+            var hash = bcrypt.hashSync(req.body.password, parseInt(process.env.BCRYPT_ROUNDS));
+            let document = new UserModel({
+                name: req.body.name,
+                emailAddress: req.body.emailAddress || '',
+                userName: req.body.userName || '',
+                password: hash,
+            });
+            return document.save();
         })
         .then(data => { //usuario registrado con exito, pasamos al siguiente manejador
-            res.json({data: data});
+            const { emailAddress = undefined } = data || {};
+            const message = emailAddress ? `You're welcome ${emailAddress}` : 'Registered successfully';
+            res.json({message});
         })
         .catch(err => { //error en registro, lo pasamos al manejador de errores
             next(err);

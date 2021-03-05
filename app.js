@@ -9,7 +9,7 @@ var graphqlRouter = require("./routes/graphql");
 var auth = require('./routes/user/auth');
 var register = require('./routes/user/register');
 var user = require('./routes/user/user');
-var instagramAuth = require('routes/instagram/auth');
+// var instagramAuth = require('routes/instagram/auth');
 // var authNoToken = require('./routes/authNoToken');
 
 /* Importing passport and configuration */
@@ -33,7 +33,7 @@ app.use('/auth', auth);
 app.use('/register', register);
 
 //Instagram
-app.use('/instagram', instagramAuth);
+// app.use('/instagram', instagramAuth);
 
 app.use('/user', passport.authenticate('jwt', {session: false}), user);
 app.use("/graphql", passport.authenticate('jwt', {session: false}), graphqlRouter);

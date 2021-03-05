@@ -52,6 +52,7 @@ passport.use(new JWTStrategy({
     }
 ));
 
+/*
 passport.use(new InstagramStrategy({
         clientID: process.env.INSTAGRAM_CLIENT_ID,
         clientSecret: process.env.INSTAGRAM_CLIENT_SECRET,
@@ -63,3 +64,4 @@ passport.use(new InstagramStrategy({
         // });
     }
 ));
+ */
